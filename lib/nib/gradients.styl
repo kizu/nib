@@ -85,29 +85,18 @@ std-stop(color, pos)
 
 linear-gradient(start, stops...)
   error('color stops required') unless length(stops)
-  if current-property
-    prop = current-property[0]
-    val = current-property[1]
-    stops = normalize-stops(stops)
+  // if current-property
+  //   if start is a 'color'
+  //     unshift(stops, start)
+  //     start = top
+  //   if start[0] is a 'unit'
+  //     if has-canvas
+  //       img = linear-gradient-image(start, stops)
+  //       add-property(prop, replace(val, '__CALL__', img))
+  //     start = start[1]
 
-    // gradient image
-    // if start is a 'color'
-    //   unshift(stops, start)
-    //   start = top
-    // if start[0] is a 'unit'
-    //   if has-canvas
-    //     img = linear-gradient-image(start, stops)
-    //     add-property(prop, replace(val, '__CALL__', img))
-    //   start = start[1]
-
-    // vendor prefixed
-    stops = join-stops(stops, std-stop)
-    for prefix in vendor-prefixes
-      unless prefix == official
-        gradient = '-%s-linear-gradient(%s, %s)' % (prefix start stops)
-        add-property(prop, replace(val, '__CALL__', gradient))
-
-  // standard
+  stops = normalize-stops(stops)
+  stops = join-stops(stops, std-stop)
   'linear-gradient(%s, %s)' % (start stops)
 
 /*
